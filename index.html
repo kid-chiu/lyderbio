@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作物健康管理顧問 | 穩定高品質與永續獲利</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #2d5a27;
+            --accent-green: #4caf50;
+            --bg-light: #f9fbf9;
+            --text-dark: #333;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang TC", "Heiti TC", "Microsoft JhengHei", sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* Hero Section */
+        header {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: var(--white);
+            padding: 20px;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+
+        header p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .cta-button {
+            background-color: var(--accent-green);
+            color: white;
+            padding: 15px 40px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .cta-button:hover {
+            background-color: #388e3c;
+            transform: translateY(-3px);
+        }
+
+        /* Values Section */
+        .section {
+            padding: 80px 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            color: var(--primary-green);
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .section-title .divider {
+            height: 4px;
+            width: 60px;
+            background-color: var(--accent-green);
+            margin: 0 auto;
+        }
+
+        /* Pricing Cards */
+        .plans {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .plan-card {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-green);
+        }
+
+        .plan-card h3 {
+            color: var(--primary-green);
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .price {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+
+        .price span {
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        .plan-card ul {
+            list-style: none;
+            margin-bottom: 30px;
+            flex-grow: 1;
+        }
+
+        .plan-card ul li {
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .plan-card ul li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--accent-green);
+            font-weight: bold;
+        }
+
+        /* Case Study */
+        .case-study {
+            background-color: var(--primary-green);
+            color: var(--white);
+            border-radius: 20px;
+            padding: 50px;
+            margin-top: 50px;
+        }
+
+        .case-study h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        .case-tag {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .case-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .case-item {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .case-item span {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffeb3b;
+        }
+
+        /* Contact Section */
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+
+        .contact-method i {
+            font-size: 2rem;
+            color: var(--accent-green);
+            margin-bottom: 15px;
+        }
+
+        .contact-method a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            background-color: #333;
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 2rem; }
+            header p { font-size: 1.1rem; }
+            .case-study { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>讓專業管理，成為您農場獲利的堅實後盾</h1>
+        <p>—— 作物健康管理與永續獲利策略 ——</p>
+        <p>在變動的氣候中維持高品質輸出。減少 30% 化肥投入，創造極致生理韌性，讓收成不再只是看天吃飯。</p>
+        <a href="https://line.me/R/ti/p/@ghp0573p" class="cta-button">立即預約初步諮詢</a>
+    </header>
+
+    <section class="section">
+        <div class="section-title">
+            <h2>為什麼選擇與我們同行？</h2>
+            <div class="divider"></div>
+        </div>
+        <p style="text-align: center; max-width: 800px; margin: 0 auto;">
+            我們提供的不是產品，而是<b>「穩定增產的策略」</b>。我們了解企業對「可預測性」的追求，透過精準營養管理強化作物免疫力與韌性，您的事業將在永續經營的基礎上，創造更高的經濟回報。
+        </p>
+    </section>
+
+    <section class="section" id="plans">
+        <div class="section-title">
+            <h2>專業合作方案</h2>
+            <div class="divider"></div>
+        </div>
+        <div class="plans">
+            <div class="plan-card">
+                <h3>【精準決策】</h3>
+                <p style="margin-bottom: 10px; font-weight: bold; color: #666;">單小時預約諮詢</p>
+                <div class="price">$2,800 <span>/ 小時</span></div>
+                <ul>
+                    <li>突發性生理障礙診斷</li>
+                    <li>快速調整管理方向</li>
+                    <li>優化現有肥培配方</li>
+                    <li>降低盲目投入成本</li>
+                </ul>
+                <a href="tel:0928596751" class="cta-button" style="text-align: center; padding: 10px;">預約諮詢</a>
+            </div>
+
+            <div class="plan-card" style="border-color: var(--accent-green); background: #fdfdfd;">
+                <h3>【系統優化】</h3>
+                <p style="margin-bottom: 10px; font-weight: bold; color: #666;">三小時深度診斷</p>
+                <div class="price">$7,000 <span>/ 時段</span></div>
+                <ul>
+                    <li>深入現場全面掃描診斷</li>
+                    <li>建立特定作物 SOP</li>
+                    <li>優化果品風味與貨架壽命</li>
+                    <li>量身打造週期管理計畫</li>
+                </ul>
+                <a href="https://line.me/R/ti/p/@ghp0573p" class="cta-button" style="text-align: center; padding: 10px;">預約田間診斷</a>
+            </div>
+
+            <div class="plan-card">
+                <h3>【企業夥伴】</h3>
+                <p style="margin-bottom: 10px; font-weight: bold; color: #666;">農企業專屬技術總監</p>
+                <div class="price">$110,000 <span>/ 季</span></div>
+                <ul>
+                    <li>每月固定 20 小時顧問服務</li>
+                    <li>商業化、標準化生產管理</li>
+                    <li>成本精控、減少冗餘化肥</li>
+                    <li>保障極端氣候下穩定供貨</li>
+                </ul>
+                <a href="mailto:kid@lyderbio.com" class="cta-button" style="text-align: center; padding: 10px;">洽談年度合作</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="case-study">
+            <span class="case-tag">成功案例成功分享</span>
+            <h3>與「士華農產行」同行的品牌升級之路</h3>
+            <p>113年，透過客戶引薦與西螺「士華農產行」合作，針對甜玉米生產管理進行最佳化研究，創造了卓越的商業價值：</p>
+            
+            <div class="case-grid">
+                <div class="case-item">
+                    <span>30% ↓</span>
+                    <p>化肥及殺菌劑減量</p>
+                </div>
+                <div class="case-item">
+                    <span>28 天</span>
+                    <p>冰儲時間倍增(14d→28d)</p>
+                </div>
+                <div class="case-item">
+                    <span>3 倍+</span>
+                    <p>颱風季超額利潤</p>
+                </div>
+            </div>
+            <p style="margin-top: 30px; font-style: italic; font-size: 0.9rem;">
+                *憑藉「穩定供貨」與「高品質」優勢，客戶在市場波動中獲得高度競爭力。
+            </p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="section-title">
+            <h2>聯繫我們：獲利從現在開始</h2>
+            <div class="divider"></div>
+        </div>
+        <div class="contact-info">
+            <div class="contact-method">
+                <i class="fas fa-phone"></i><br>
+                <a href="tel:0928596751">0928-596751</a>
+            </div>
+            <div class="contact-method">
+                <i class="fab fa-line"></i><br>
+                <a href="https://line.me/R/ti/p/@ghp0573p">LINE@: @ghp0573p</a>
+            </div>
+            <div class="contact-method">
+                <i class="fas fa-envelope"></i><br>
+                <a href="mailto:kid@lyderbio.com">kid@lyderbio.com</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 錸德生物科技有限公司 Ritek Bio-Tech Co., Ltd. | 作物健康管理顧問</p>
+    </footer>
+
+</body>
+</html>
