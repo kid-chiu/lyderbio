@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>綠金科技 | 專業有機液肥技術</title>
+    <style>
+        /* CSS 變數定義，方便替換品牌色 */
+        :root {
+            --primary-green: #2B5B32; /* 森林綠 */
+            --accent-orange: #E67E22; /* 科技橘，用於按鈕 */
+            --light-bg: #F8F9FA;
+            --text-dark: #333333;
+            --text-gray: #666666;
+        }
+
+        /* 基礎重置與字體設定 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Helvetica, Arial, '微軟正黑體', sans-serif;
+        }
+        body {
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+        h1, h2, h3 {
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        /* 按鈕樣式 */
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-orange);
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: background 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #D35400;
+        }
+
+        /* 1. 首屏 (Hero Section) */
+        .hero {
+            height: 100vh;
+            min-height: 600px;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1585499193151-0f50d54c4e54?auto=format&fit=crop&w=1920&q=80') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding: 20px;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* 共用網格系統 (Flexbox) */
+        .grid-3 {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .grid-3 > div {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        /* 2. 核心痛點 */
+        .problems {
+            background-color: var(--light-bg);
+            text-align: center;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 40px;
+            color: var(--primary-green);
+        }
+
+        /* 3. 技術解密 */
+        .solution {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 40px;
+        }
+        .solution-img {
+            flex: 1;
+            min-width: 300px;
+        }
+        .solution-text {
+            flex: 1;
+            min-width: 300px;
+        }
+        .solution-text ul {
+            list-style: none;
+            margin-top: 20px;
+        }
+        .solution-text li {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            padding-left: 25px;
+            position: relative;
+        }
+        .solution-text li::before {
+            content: '✓';
+            color: var(--primary-green);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        /* 4. 產品應用 */
+        .cases {
+            background-color: var(--light-bg);
+        }
+        .case-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+
+        /* 5. 權威背書 */
+        .trust {
+            text-align: center;
+            background-color: white;
+        }
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        .badge {
+            background: var(--light-bg);
+            padding: 20px 40px;
+            border-radius: 8px;
+            font-weight: bold;
+            color: var(--primary-green);
+        }
+
+        /* 6. 底部表單 (Contact) */
+        .contact {
+            background-color: var(--primary-green);
+            color: white;
+            text-align: center;
+        }
+        .contact .section-title {
+            color: white;
+        }
+        .form-group {
+            max-width: 500px;
+            margin: 0 auto 15px auto;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        .line-btn {
+            display: inline-block;
+            background-color: #00B900; /* LINE 官方綠 */
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        /* 響應式設計調整 */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; }
+            .section-title { font-size: 1.8rem; }
+            .grid-3 > div { min-width: 100%; }
+            .solution { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="hero">
+        <div>
+            <h1>讓土壤重獲新生，用科技驅動產量</h1>
+            <p>專注於微生物螯合液肥技術，提升吸收率 40%，助您打造永續豐收的良田。</p>
+            <a href="#contact" class="btn">免費獲取肥培方案</a>
+        </div>
+    </header>
+
+    <section class="problems">
+        <div class="container">
+            <h2 class="section-title">農民常見的三大挑戰</h2>
+            <div class="grid-3">
+                <div>
+                    <h3>⚠️ 肥力流失</h3>
+                    <p>慣行農法導致土壤酸化硬化，肥料下得再多也無法吸收，白白浪費成本。</p>
+                </div>
+                <div>
+                    <h3>🍂 吸收不良</h3>
+                    <p>遇到氣候逆境時，作物根系衰弱，無法有效轉化養分，生長停滯。</p>
+                </div>
+                <div>
+                    <h3>💰 成本過高</h3>
+                    <p>化肥與農藥成本逐年攀升，但產量卻遇到天花板，利潤不斷被壓縮。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container">
+        <h2 class="section-title">我們的技術解密</h2>
+        <div class="solution">
+            <div class="solution-img">
+                <img src="https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&w=600&q=80" alt="實驗室技術">
+            </div>
+            <div class="solution-text">
+                <h3>為什麼綠金科技的液肥更有效？</h3>
+                <p>我們將實驗室的尖端生物科技，轉化為田間最實用的營養補給。</p>
+                <ul>
+                    <li><strong>獨家小分子螯合技術：</strong> 模擬植物天然吸收路徑，分子量更小，吸收速度快 2 倍。</li>
+                    <li><strong>複合益生菌群：</strong> 有效活化根圈生態，分解土壤中累積的無效鹽分。</li>
+                    <li><strong>100% 安全無毒：</strong> 拒絕重金屬殘留，完全符合國內有機資材規範。</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="cases">
+        <div class="container">
+            <h2 class="section-title">實作見證：產量與品質的雙重提升</h2>
+            <div class="grid-3">
+                <div class="case-card">
+                    <img src="https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=400&q=80" alt="果樹類">
+                    <h3>果樹類 (蓮霧/芒果)</h3>
+                    <p><strong>成果：</strong> 果粉厚實，裂果率下降30%，平均甜度提升 2 度。</p>
+                </div>
+                <div class="case-card">
+                    <img src="https://images.unsplash.com/photo-1556950961-8c0119c7f5d5?auto=format&fit=crop&w=400&q=80" alt="葉菜類">
+                    <h3>葉菜類</h3>
+                    <p><strong>成果：</strong> 葉面翠綠肥厚，縮短採收期 5-7 天，口感更為脆嫩。</p>
+                </div>
+                <div class="case-card">
+                    <img src="https://images.unsplash.com/photo-1592841200221-a6898f307baa?auto=format&fit=crop&w=400&q=80" alt="設施園藝">
+                    <h3>設施園藝 (溫室番茄)</h3>
+                    <p><strong>成果：</strong> 根系發展茂盛，抗病與抗極端氣候能力顯著增強。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="trust container">
+        <h2 class="section-title">專業認證，農友安心</h2>
+        <p>深耕台灣農業 20 年，累積服務超過 5,000 位專業農友與契作大場。</p>
+        <div class="trust-badges">
+            <div class="badge">✅ 有機農業適用資材</div>
+            <div class="badge">🔬 SGS 473項農藥零檢出</div>
+            <div class="badge">🏆 國家級農業生技專利</div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">立即預約您的專屬土壤診斷</h2>
+            <p style="margin-bottom: 30px;">填寫表單，我們的農業技術員將在 24 小時內與您聯繫。</p>
+            
+            <form action="#" method="POST">
+                <div class="form-group">
+                    <input type="text" placeholder="您的姓名或農場名稱" required>
+                </div>
+                <div class="form-group">
+                    <input type="tel" placeholder="聯絡電話" required>
+                </div>
+                <div class="form-group">
+                    <select required>
+                        <option value="" disabled selected>請選擇主要種植作物</option>
+                        <option value="果樹">果樹類</option>
+                        <option value="葉菜">葉菜類</option>
+                        <option value="瓜果">瓜果類</option>
+                        <option value="花卉">花卉類</option>
+                        <option value="其他">其他</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn" style="width: 100%; max-width: 500px; margin-top: 10px;">送出免費諮詢</button>
+            </form>
+
+            <div style="margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 30px;">
+                <p>習慣用 LINE 討論？加入官方客服，專業技師線上看圖抓藥！</p>
+                <a href="#" class="line-btn">加入 LINE 官方帳號</a>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>
