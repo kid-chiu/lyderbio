@@ -171,14 +171,30 @@ function calculateROI() {
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbyS96MtUjDe6Kx_aP2b9lZh2GvosGvoMvX-ZnmB05K6jN18SgNTp8e57U52TrbBT94/exec';
 
 function initWeather() {
-    // 檢查瀏覽器是否支援定位
+    const locElement = document.getElementById('loc-name');
+    locElement.innerText = "📍 正在請求定位權限...";
+
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
-            (pos) => loadWeather(pos.coords.latitude, pos.coords.longitude),
-            () => loadWeather(24.1477, 120.6736) // 如果農友按「拒絕提供位置」，預設顯示台中
+            // 成功取得座標
+            (pos) => {
+                loadWeather(pos.coords.latitude, pos.coords.longitude);
+            },
+            // 取得座標失敗 (被拒絕或環境不安全)
+            (err) => {
+                let reason = "";
+                if (err.code === 1) reason = "權限被拒絕或非 HTTPS 環境";
+                else if (err.code === 2) reason = "無法連線到定位服務";
+                else if (err.code === 3) reason = "定位超時";
+                
+                locElement.innerText = `📍 定位受阻 (${reason})，預設顯示台中測站`;
+                loadWeather(24.1477, 120.6736); // 啟動備案
+            },
+            { timeout: 10000 } // 設定 10 秒超時
         );
     } else {
-        loadWeather(24.1477, 120.6736); // 不支援定位時，預設顯示台中
+        locElement.innerText = "📍 瀏覽器不支援定位功能，預設顯示台中測站";
+        loadWeather(24.1477, 120.6736);
     }
 }
 
