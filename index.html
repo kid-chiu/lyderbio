@@ -149,42 +149,68 @@
 </div>
 
 <script>
-    // --- 試算表邏輯 ---
-    function calculateROI() {
-        const fert = parseFloat(document.getElementById('fert-use').value);
-        const yieldVal = parseFloat(document.getElementById('yield').value);
-        const box = document.getElementById('result-box');
-        
-        let newFert = fert * 0.6; // 預估保守減少 40%
-        let newYield = yieldVal * 1.15; // 預估保守提升 15%
-
-        box.innerHTML = `
-            <strong>預估改善空間：</strong><br>
-            若導入精準健康管理，您的肥料用量有機會降至約 <span style="color:var(--primary-green); font-weight:bold;">${Math.round(newFert)} 公斤/分地</span>，<br>
-            且在克服病害與土壤障礙後，產量有潛力提升至 <span style="color:var(--accent-orange); font-weight:bold;">${Math.round(newYield)} 公斤/分地</span>。<br>
-            <small style="color:#777;">*實際成效依現場土壤體檢結果為準。</small>
-        `;
-        box.style.display = 'block';
-    }
-
-    // --- 氣象中繼站串接 (微型版) ---
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbyS96MtUjDe6Kx_aP2b9lZh2GvosGvoMvX-ZnmB05K6jN18SgNTp8e57U52TrbBT94/exec';
+// --- 試算表邏輯 ---
+function calculateROI() {
+    const fert = parseFloat(document.getElementById('fert-use').value);
+    const yieldVal = parseFloat(document.getElementById('yield').value);
+    const box = document.getElementById('result-box');
     
-    async function loadWeather() {
-        try {
-            // 簡化流程，直接取台中資料作為示範，或後續加回 Geolocation
-            const res = await fetch(`${GAS_URL}?type=obs`);
-            const data = await res.json();
-            const station = data.records.Station[0]; // 抓第一筆示範
-            
-            document.getElementById('loc-name').innerText = `📍 最近測站：${station.StationName}`;
-            document.getElementById('weather-status').innerText = `目前氣溫 ${station.WeatherElement.AirTemperature}°C | 濕度 ${station.WeatherElement.RelativeHumidity}%`;
-            document.getElementById('forecast-mini').innerHTML = `<span style="background:var(--light-green); padding:5px 10px; border-radius:15px; font-size:0.9rem;">⚠️ 未來注意極端溫差與強降雨</span>`;
-        } catch (e) {
-            document.getElementById('loc-name').innerText = "📍 氣象服務連線中...";
-        }
+    let newFert = fert * 0.6; // 預估保守減少 40%
+    let newYield = yieldVal * 1.15; // 預估保守提升 15%
+
+    box.innerHTML = `
+        <strong>預估改善空間：</strong><br>
+        若導入精準健康管理，您的肥料用量有機會降至約 <span style="color:var(--primary-green); font-weight:bold;">${Math.round(newFert)} 公斤/分地</span>，<br>
+        且在克服病害與土壤障礙後，產量有潛力提升至 <span style="color:var(--accent-orange); font-weight:bold;">${Math.round(newYield)} 公斤/分地</span>。<br>
+        <small style="color:#777;">*實際成效依現場土壤體檢結果為準。</small>
+    `;
+    box.style.display = 'block';
+}
+
+// --- 氣象中繼站串接 (自動定位恢復版) ---
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbyS96MtUjDe6Kx_aP2b9lZh2GvosGvoMvX-ZnmB05K6jN18SgNTp8e57U52TrbBT94/exec';
+
+function initWeather() {
+    // 檢查瀏覽器是否支援定位
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (pos) => loadWeather(pos.coords.latitude, pos.coords.longitude),
+            () => loadWeather(24.1477, 120.6736) // 如果農友按「拒絕提供位置」，預設顯示台中
+        );
+    } else {
+        loadWeather(24.1477, 120.6736); // 不支援定位時，預設顯示台中
     }
-    loadWeather();
+}
+
+async function loadWeather(lat, lon) {
+    try {
+        const res = await fetch(`${GAS_URL}?type=obs`);
+        const data = await res.json();
+        const stations = data.records.Station;
+        
+        // 數學計算：找出經緯度距離使用者最近的測站
+        let closestStation = stations[0];
+        let minDistance = Infinity;
+
+        stations.forEach(s => {
+            const dist = Math.sqrt(Math.pow(s.GeoInfo.Coordinates.CenterLat - lat, 2) + Math.pow(s.GeoInfo.Coordinates.CenterLon - lon, 2));
+            if (dist < minDistance) {
+                minDistance = dist;
+                closestStation = s;
+            }
+        });
+        
+        // 將最近的測站資訊顯示到網頁上
+        document.getElementById('loc-name').innerText = `📍 最近測站：${closestStation.StationName} (${closestStation.GeoInfo.CountyName})`;
+        document.getElementById('weather-status').innerText = `目前氣溫 ${closestStation.WeatherElement.AirTemperature}°C | 濕度 ${closestStation.WeatherElement.RelativeHumidity}%`;
+        document.getElementById('forecast-mini').innerHTML = `<span style="background:var(--light-green); padding:5px 10px; border-radius:15px; font-size:0.9rem; color:var(--primary-green); font-weight:bold;">極端氣候監測中</span>`;
+    } catch (e) {
+        document.getElementById('loc-name').innerText = "📍 氣象服務連線中...";
+    }
+}
+
+// 啟動氣象定位功能
+initWeather();
 </script>
 
 </body>
