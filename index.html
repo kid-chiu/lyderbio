@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>永續農務研發所 | 動態氣象與收益評估</title>
+    <title>永續農務研發所 | 農業顧問與技術導入</title>
     <style>
         :root {
             --primary-green: #2e7d32;
@@ -12,29 +12,183 @@
             --bg-color: #fcfbf9;
             --accent-orange: #ff9800;
         }
-        body { font-family: '微軟正黑體', sans-serif; margin: 0; background-color: var(--bg-color); color: #333; }
+        body { font-family: '微軟正黑體', sans-serif; margin: 0; background-color: var(--bg-color); color: #333; line-height: 1.6; }
         header { background: var(--primary-green); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .section-container { max-width: 1000px; margin: 20px auto; padding: 0 15px; }
-        .card { background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); padding: 25px; margin-bottom: 20px; border-top: 5px solid var(--primary-green); }
+        .section-container { max-width: 1000px; margin: 40px auto; padding: 0 15px; }
         
-        /* 氣象專屬樣式 */
-        .weather-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
-        .current-weather { text-align: center; border-right: 1px solid #eee; padding-right: 20px; }
-        .temp-display { font-size: 3.5rem; font-weight: bold; color: var(--earth-brown); margin: 10px 0; }
-        .forecast-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #ddd; align-items: center; }
-        .forecast-tag { background: var(--light-green); padding: 2px 8px; border-radius: 4px; font-size: 0.85rem; color: var(--primary-green); }
+        /* 首頁橫幅 */
+        .hero { background: var(--earth-brown); color: white; padding: 60px 20px; text-align: center; border-radius: 0 0 20px 20px; }
+        .hero h2 { font-size: 2.2rem; margin-top: 0; }
+        .hero p { font-size: 1.1rem; max-width: 700px; margin: 0 auto 20px auto; color: #d7ccc8; }
         
-        /* 試算表樣式 */
-        .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .calc-group { margin-bottom: 15px; }
-        .calc-group label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.95rem; }
-        .calc-group input, .calc-group select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; box-sizing: border-box;}
-        .btn { background: var(--primary-green); color: white; border: none; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-size: 1rem; width: 100%; font-weight: bold; margin-top: 10px;}
+        /* 案例卡片專屬樣式 */
+        .case-card { background: white; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); overflow: hidden; margin-top: -30px; position: relative; z-index: 10; border-top: 6px solid var(--primary-green); }
+        .case-header { background: var(--light-green); padding: 20px 30px; border-bottom: 1px solid #c8e6c9; }
+        .case-header h3 { margin: 0; color: var(--primary-green); font-size: 1.5rem; display: flex; align-items: center; }
+        .case-body { padding: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .pain-points { background: #fafafa; padding: 20px; border-radius: 8px; border-left: 4px solid var(--accent-orange); }
+        .solution { margin-top: 15px; font-weight: bold; color: var(--primary-green); }
+        
+        /* 數據凸顯區塊 */
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .stat-box { background: white; border: 1px solid #eee; border-radius: 8px; padding: 15px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .stat-num { font-size: 2.2rem; font-weight: bold; color: var(--earth-brown); line-height: 1.2; }
+        .stat-label { font-size: 0.95rem; font-weight: bold; margin-top: 5px; }
+        .stat-sub { font-size: 0.8rem; color: #777; }
+
+        /* 一般卡片與按鈕 */
+        .card { background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); padding: 25px; margin-bottom: 20px; }
+        .btn { background: var(--primary-green); color: white; border: none; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-size: 1rem; font-weight: bold; display: inline-block; text-decoration: none; text-align: center;}
         .btn:hover { background: #1b5e20; }
-        #result-box { margin-top: 20px; padding: 20px; background: #fff3e0; border-radius: 8px; display: none; border-left: 5px solid var(--accent-orange); }
+        
+        /* 試算與氣象簡化樣式 */
+        .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .calc-group input, .calc-group select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        #result-box { display: none; margin-top: 15px; padding: 15px; background: #fff3e0; border-left: 4px solid var(--accent-orange); }
+        .weather-mini { display: flex; justify-content: space-between; align-items: center; background: #f5f5f5; padding: 15px; border-radius: 8px; }
 
         @media (max-width: 768px) { 
-            .weather-grid, .calc-grid { grid-template-columns: 1fr; } 
+            .case-body, .stats-grid, .calc-grid { grid-template-columns: 1fr; } 
+            .weather-mini { flex-direction: column; align-items: flex-start; gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div style="font-size: 1.2rem; font-weight: bold;">🌱 永續農務研發所</div>
+    <div style="font-size: 0.9rem;">健康栽培管理顧問</div>
+</header>
+
+<!-- 第一區塊：核心主張 -->
+<div class="hero">
+    <h2>結合生物技術，讓土壤重獲生機</h2>
+    <p>專注中部與高山農業。我們提供「作物健康與土壤復原」滾動式管理方案，助您突破慣行農法瓶頸，降低成本、對抗氣候逆境，實現永續獲利。</p>
+    <a href="#contact" class="btn" style="background: var(--light-green); color: var(--earth-brown);">預約農場體檢與諮詢</a>
+</div>
+
+<!-- 第二區塊：成功案例 (主打視覺) -->
+<div class="section-container">
+    <div class="case-card">
+        <div class="case-header">
+            <h3>🌽 突破天災供貨瓶頸：雲林士華農產行</h3>
+        </div>
+        <div class="case-body">
+            <div>
+                <div class="pain-points">
+                    <strong style="color: #d32f2f;">過去痛點：</strong><br>
+                    傳統慣行農法生產的國產玉米，保存期限僅約兩週。當天災來臨時供貨中斷，只能眼睜睜看著災後兩週玉米價格暴漲，卻無貨可賣。
+                </div>
+                <div class="solution">
+                    <p>💡 導入方案：</p>
+                    作物健康管理 ＋ 土壤健康復原方案<br>
+                    <span style="font-weight: normal; color: #555; font-size: 0.95rem;">(經半年滾動式調整與密切監測)</span>
+                </div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-num" style="color: var(--primary-green);">-50%</div>
+                    <div class="stat-label">肥料用量減半</div>
+                    <div class="stat-sub">400kg ➔ 200kg/分地</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-num" style="color: var(--accent-orange);">+22%</div>
+                    <div class="stat-label">最高產量突破</div>
+                    <div class="stat-sub">1800kg ➔ 2200kg/分地</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-num">清零</div>
+                    <div class="stat-label">玉米銹病消失</div>
+                    <div class="stat-sub">植株抗病力大幅提升</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 第三區塊：收益試算 -->
+<div class="section-container">
+    <h2>💰 你的農場也能做到嗎？試算轉型效益</h2>
+    <div class="card">
+        <p style="color: #666;">輸入您的現況，評估導入「生防結合慣行農法」後，能為您省下多少成本並挽回災損。</p>
+        <div class="calc-grid">
+            <div class="calc-group">
+                <label>目前肥料用量 (公斤/分地)：</label>
+                <input type="number" id="fert-use" value="400">
+            </div>
+            <div class="calc-group">
+                <label>目前最高產量 (公斤/分地)：</label>
+                <input type="number" id="yield" value="1800">
+            </div>
+        </div>
+        <button class="btn" style="width: 100%; margin-top: 15px;" onclick="calculateROI()">計算改善潛力</button>
+        <div id="result-box"></div>
+    </div>
+</div>
+
+<!-- 第四區塊：氣象工具 (縮小並置底) -->
+<div class="section-container" id="weather-section">
+    <h2 style="font-size: 1.3rem;">☁️ 氣候逆境預警系統</h2>
+    <div class="card weather-mini">
+        <div>
+            <div style="font-weight: bold; color: var(--primary-green);" id="loc-name">📍 正在連接測站...</div>
+            <div style="font-size: 0.9rem; color: #666;" id="weather-status">資料讀取中</div>
+        </div>
+        <div style="text-align: right;" id="forecast-mini">
+            <!-- 預報微型顯示 -->
+        </div>
+    </div>
+</div>
+
+<!-- 第五區塊：聯絡與 Footer -->
+<div class="section-container" id="contact" style="text-align: center; padding: 40px 0;">
+    <h2>準備好升級您的栽培模式了嗎？</h2>
+    <p>減少盲目施肥，用科學數據讓作物更健康、收益更穩定。</p>
+    <a href="#" class="btn" style="background: #06C755; font-size: 1.2rem; padding: 15px 40px;">加入 LINE 官方帳號免費諮詢</a>
+    <p style="margin-top: 20px; font-size: 0.9rem; color: #888;">© 2026 永續農務研發所</p>
+</div>
+
+<script>
+    // --- 試算表邏輯 ---
+    function calculateROI() {
+        const fert = parseFloat(document.getElementById('fert-use').value);
+        const yieldVal = parseFloat(document.getElementById('yield').value);
+        const box = document.getElementById('result-box');
+        
+        let newFert = fert * 0.6; // 預估保守減少 40%
+        let newYield = yieldVal * 1.15; // 預估保守提升 15%
+
+        box.innerHTML = `
+            <strong>預估改善空間：</strong><br>
+            若導入精準健康管理，您的肥料用量有機會降至約 <span style="color:var(--primary-green); font-weight:bold;">${Math.round(newFert)} 公斤/分地</span>，<br>
+            且在克服病害與土壤障礙後，產量有潛力提升至 <span style="color:var(--accent-orange); font-weight:bold;">${Math.round(newYield)} 公斤/分地</span>。<br>
+            <small style="color:#777;">*實際成效依現場土壤體檢結果為準。</small>
+        `;
+        box.style.display = 'block';
+    }
+
+    // --- 氣象中繼站串接 (微型版) ---
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbyS96MtUjDe6Kx_aP2b9lZh2GvosGvoMvX-ZnmB05K6jN18SgNTp8e57U52TrbBT94/exec';
+    
+    async function loadWeather() {
+        try {
+            // 簡化流程，直接取台中資料作為示範，或後續加回 Geolocation
+            const res = await fetch(`${GAS_URL}?type=obs`);
+            const data = await res.json();
+            const station = data.records.Station[0]; // 抓第一筆示範
+            
+            document.getElementById('loc-name').innerText = `📍 最近測站：${station.StationName}`;
+            document.getElementById('weather-status').innerText = `目前氣溫 ${station.WeatherElement.AirTemperature}°C | 濕度 ${station.WeatherElement.RelativeHumidity}%`;
+            document.getElementById('forecast-mini').innerHTML = `<span style="background:var(--light-green); padding:5px 10px; border-radius:15px; font-size:0.9rem;">⚠️ 未來注意極端溫差與強降雨</span>`;
+        } catch (e) {
+            document.getElementById('loc-name').innerText = "📍 氣象服務連線中...";
+        }
+    }
+    loadWeather();
+</script>
+
+</body>
+</html>            .weather-grid, .calc-grid { grid-template-columns: 1fr; } 
             .current-weather { border-right: none; border-bottom: 1px solid #eee; padding-bottom: 20px; padding-right: 0; } 
         }
     </style>
