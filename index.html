@@ -204,23 +204,34 @@ async function loadWeather(lat, lon) {
         const data = await res.json();
         const stations = data.records.Station;
         
-        // 數學計算：找出經緯度距離使用者最近的測站
         let closestStation = stations[0];
         let minDistance = Infinity;
 
         stations.forEach(s => {
-            const dist = Math.sqrt(Math.pow(s.GeoInfo.Coordinates.CenterLat - lat, 2) + Math.pow(s.GeoInfo.Coordinates.CenterLon - lon, 2));
-            if (dist < minDistance) {
-                minDistance = dist;
-                closestStation = s;
+            // 【修正點】正確抓取氣象署的經緯度資料格式
+            const coords = s.GeoInfo.Coordinates;
+            // 尋找 WGS84 座標（這是手機 GPS 通用的格式）
+            const wgs84 = coords.find(c => c.CoordinateName === 'WGS84') || coords[0];
+            const sLat = parseFloat(wgs84.StationLatitude);
+            const sLon = parseFloat(wgs84.StationLongitude);
+
+            // 確保有抓到數字才進行計算
+            if (!isNaN(sLat) && !isNaN(sLon)) {
+                // 利用畢氏定理計算平面距離
+                const dist = Math.sqrt(Math.pow(sLat - lat, 2) + Math.pow(sLon - lon, 2));
+                if (dist < minDistance) {
+                    minDistance = dist;
+                    closestStation = s;
+                }
             }
         });
         
-        // 將最近的測站資訊顯示到網頁上
+        // 將真正最近的測站資訊顯示到網頁上
         document.getElementById('loc-name').innerText = `📍 最近測站：${closestStation.StationName} (${closestStation.GeoInfo.CountyName})`;
         document.getElementById('weather-status').innerText = `目前氣溫 ${closestStation.WeatherElement.AirTemperature}°C | 濕度 ${closestStation.WeatherElement.RelativeHumidity}%`;
         document.getElementById('forecast-mini').innerHTML = `<span style="background:var(--light-green); padding:5px 10px; border-radius:15px; font-size:0.9rem; color:var(--primary-green); font-weight:bold;">極端氣候監測中</span>`;
     } catch (e) {
+        console.error("讀取或計算錯誤:", e);
         document.getElementById('loc-name').innerText = "📍 氣象服務連線中...";
     }
 }
